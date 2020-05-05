@@ -51,19 +51,24 @@ namespace Task01
             catch (ArgumentNullException)
             {
                 Console.WriteLine("ArgumentNullException");
+                //тут надо закрывать программу, сначала я так думал, а потом решил, что это не нужно
+                //ну короче нужно выходить, иначе программа продолжт работу с некорректным массивом
+                return;
             }
             catch (ArgumentException)
             {
                 Console.WriteLine("ArgumentException");
+                return;
             }
             catch (FormatException)
             {
                 Console.WriteLine("FormatException");
-
+                return;
             }
             catch (OverflowException)
             {
                 Console.WriteLine("OverflowException");
+                return;
             }
 
             // использовать синтаксис запросов!

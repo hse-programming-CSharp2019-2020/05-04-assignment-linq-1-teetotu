@@ -36,6 +36,7 @@ namespace Task01
     {
         static void Main(string[] args)
         {
+            // тут я исправил опечаточку
             RunTask01();
         }
 
@@ -59,7 +60,7 @@ namespace Task01
             catch (FormatException)
             {
                 Console.WriteLine("FormatException");
-                return;
+                
             }
             catch (OverflowException)
             {
@@ -92,6 +93,7 @@ namespace Task01
 
         // Попробуйте осуществить вывод элементов коллекции с учетом разделителя, записав это ОДНИМ ВЫРАЖЕНИЕМ.
         // P.S. Есть два способа, оставьте тот, в котором применяется LINQ...
+        // я сократил имя, потому что зачем...
         public static void Print<T>(IEnumerable<T> col, string sep) =>
             Console.WriteLine(col.Select(x => x.ToString()).Aggregate((x, y) => x + sep + y));
     }

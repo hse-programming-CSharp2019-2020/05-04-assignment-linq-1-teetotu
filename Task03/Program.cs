@@ -88,11 +88,11 @@ namespace Task03
             }
 
             // выполните сортировку одним выражением
-            var computerInfoQuery = from compInfo in computerInfoList
-                                    orderby compInfo.Owner descending
-                                    orderby compInfo.ComputerManufacturer ascending
-                                    orderby compInfo.yearOfManufacture descending
-                                    select compInfo;
+            var computerInfoQuery = from x in computerInfoList
+                                    orderby x.Year descending
+                                    orderby x.ComputerManufacturer.ToString()
+                                    orderby x.Owner descending
+                                    select x;
 
 
             PrintCollectionInOneLine(computerInfoQuery);

@@ -40,12 +40,22 @@ namespace Task04
 
         public static void RunTesk04()
         {
-            int[] arr;
             try
             {
-                // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
-                arr = (from a in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                       select int.Parse(a)).ToArray();
+                checked
+                {
+                    // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
+                    int[] arr = (from a in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                 select int.Parse(a)).ToArray();
+                    // использовать синтаксис методов! SQL-подобные запросы не писать!
+
+                    int arrAggregate = 5 + arr.Select((x, index) => (int)Math.Pow(-1, index) * x)
+                                                   .Aggregate((x, y) => x + y);
+                    int arrMyAggregate = MyClass.MyAggregate(arr);
+
+                    Console.WriteLine(arrAggregate);
+                    Console.WriteLine(arrMyAggregate);
+                }
             }
             catch (ArgumentNullException)
             {
@@ -68,15 +78,6 @@ namespace Task04
                 return;
             }
 
-            // использовать синтаксис методов! SQL-подобные запросы не писать!
-
-            int arrAggregate = 5 + arr.Select((x, index) => (int)Math.Pow(-1, index) * x)
-                                           .Aggregate((x, y) => x + y);
-            int arrMyAggregate = MyClass.MyAggregate(arr);
-
-                Console.WriteLine(arrAggregate);
-                Console.WriteLine(arrMyAggregate);
-           
         }
     }
 

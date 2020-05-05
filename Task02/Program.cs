@@ -41,15 +41,14 @@ namespace Task02
 
         public static void RunTask02()
         {
-            int[] arr = null;
             try
             {
                 checked
                 {
                     // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
-                    arr = (Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                    int[] arr = (Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
                         .Select(str => int.Parse(str)).ToArray();
-                    var filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
+                    var filteredCollection = arr.TakeWhile(x => x != 0);
 
                     double averageUsingStaticForm = Enumerable.Average(filteredCollection.Select(val => val * val));
                     double averageUsingInstanceForm = filteredCollection.Select(val => val * val).Average();
@@ -72,11 +71,14 @@ namespace Task02
             catch (FormatException)
             {
                 Console.WriteLine("FormatException");
-
             }
             catch (OverflowException)
             {
                 Console.WriteLine("OverflowException");
+            }
+            catch(InvalidOperationException)
+            {
+                Console.WriteLine("InvalidOperationException");
             }
         }
 

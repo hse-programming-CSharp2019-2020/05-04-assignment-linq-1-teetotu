@@ -44,14 +44,13 @@ namespace Task02
             int[] arr = null;
             try
             {
-                // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
-                arr = (from x in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                       select int.Parse(x)).ToArray();
                 checked
                 {
-                    int[] filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
+                    // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
+                    arr = (Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                        .Select(str => int.Parse(str)).ToArray();
+                    var filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
 
-                    //зачем я дважды чекд сделал...подсказка была принята криво...
                     double averageUsingStaticForm = Enumerable.Average(filteredCollection.Select(val => val * val));
                     double averageUsingInstanceForm = filteredCollection.Select(val => val * val).Average();
 

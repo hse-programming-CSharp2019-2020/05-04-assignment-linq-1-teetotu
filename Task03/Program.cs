@@ -104,7 +104,7 @@ namespace Task03
         }
 
         // выведите элементы коллекции на экран с помощью кода, состоящего из одной линии (должна быть одна точка с запятой)
-        //public static void PrintCollectionInOneLine<T>(IEnumerable<T> col) => тут просто метод из прошлых заданий
+        // public static void PrintCollectionInOneLine<T>(IEnumerable<T> col) => тут просто метод из прошлых заданий
         //    Console.WriteLine(col.Select(x => x.ToString()).Aggregate((x, y) => x + Environment.NewLine + y));
         public static void PrintCollectionInOneLine(IEnumerable<ComputerInfo> collection) =>
             collection.ToList().ForEach(x => Console.WriteLine(x));

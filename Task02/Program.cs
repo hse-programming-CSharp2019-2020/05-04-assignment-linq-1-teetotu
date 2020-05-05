@@ -50,12 +50,9 @@ namespace Task02
                 checked
                 {
                     int[] filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
-                    int[] squaresOfFilteredCollection = arr.Select(x => x * x).ToArray();
-                    // Статическая форма вызова метода подсчета среднего
-                    double averageUsingStaticForm = squaresOfFilteredCollection.Average();
 
-                    // Объектная форма вызова метода подсчета среднего
-                    double averageUsingInstanceForm = Enumerable.Average(squaresOfFilteredCollection);
+                    double averageUsingStaticForm = checked(Enumerable.Average(filteredCollection.Select(val => val * val)));
+                    double averageUsingInstanceForm = checked(filteredCollection.Select(val => val * val).Average());
 
                     Console.WriteLine($"{averageUsingInstanceForm:f3}");
                     Console.WriteLine($"{averageUsingStaticForm:f3}");

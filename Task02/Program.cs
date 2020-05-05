@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 /* В задаче не использовать циклы for, while. Все действия по обработке данных выполнять с использованием LINQ
  * 
@@ -33,35 +35,67 @@ namespace Task02
     {
         static void Main(string[] args)
         {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             RunTesk02();
         }
 
         public static void RunTesk02()
         {
-            int[] arr;
+            int[] arr = null;
             try
             {
                 // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
-                arr = 
+                arr = (from x in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                       select int.Parse(x)).ToArray();
             }
-            
-            
-            var filteredCollection = arr.
-           
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("ArgumentNullException");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("ArgumentException");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("FormatException");
+
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("OverflowException");
+            }
+
+            var filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
+            var squaresOfFilteredCollection = arr.Select(x => Math.Pow(x, 2));
+
             try
             {
-                
-                // использовать статическую форму вызова метода подсчета среднего
-                double averageUsingStaticForm = 
-                // использовать объектную форму вызова метода подсчета среднего
-                double averageUsingInstanceForm = 
 
+                // Статическая форма вызова метода подсчета среднего
+                double averageUsingStaticForm = squaresOfFilteredCollection.Average();
+
+                // Объектная форма вызова метода подсчета среднего
+                double averageUsingInstanceForm = Enumerable.Average(squaresOfFilteredCollection);
+                
+                Console.WriteLine($"{averageUsingInstanceForm:f3}");
+                Console.WriteLine($"{averageUsingStaticForm:f3}");
 
                 // вывести элементы коллекции в одну строку
-                filteredCollection.
+                Print(filteredCollection, ' ');
             }
-          
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("ArgumentNullException");
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("InvalidOperationException");
+            }
+
         }
-        
+
+        public static void Print<T>(IEnumerable<T> col, char sep) =>
+            Console.WriteLine(col.Select(x => x.ToString()).Aggregate((x, y) => x + sep + y));
     }
 }

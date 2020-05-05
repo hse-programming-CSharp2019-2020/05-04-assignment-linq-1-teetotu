@@ -35,10 +35,11 @@ namespace Task04
     {
         static void Main(string[] args)
         {
-            RunTesk04();
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            RunTask04();
         }
 
-        public static void RunTesk04()
+        public static void RunTask04()
         {
             int[] arr;
             try

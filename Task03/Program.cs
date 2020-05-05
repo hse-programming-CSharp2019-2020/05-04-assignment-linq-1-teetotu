@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 /*Все действия по обработке данных выполнять с использованием LINQ
  * 
@@ -52,48 +53,42 @@ namespace Task03
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            Console.InputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             int N = 0;
             List<ComputerInfo> computerInfoList = new List<ComputerInfo>();
             try
             {
                 N = int.Parse(Console.ReadLine());
-
+                char[] chr = { ' ' };
                 for (int i = 0; i < N; i++)
                 {
-                    string[] info = Console.ReadLine().Split(' ');
-                    if (info.Length != 3)
-                        throw new FormatException();
-                    try
-                    {
-                        computerInfoList.Add(new ComputerInfo(info[0], int.Parse(info[2]), int.Parse(info[1])));
-                    }
-                    catch (ArgumentException)
-                    {
-                        throw new ArgumentException();
-                    }
+                    string[] str = Console.ReadLine().Split(chr, StringSplitOptions.RemoveEmptyEntries);
+                    computerInfoList.Add(new ComputerInfo(str[0], int.Parse(str[1]), (Manufacturer)int.Parse(str[2])));
                 }
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("FormatException");
-                return;
             }
             catch (ArgumentException)
             {
                 Console.WriteLine("ArgumentException");
-                return;
             }
+            catch (FormatException)
+            {
+                Console.WriteLine("FormatException");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("OverflowException");
+            }
+
 
             // выполните сортировку одним выражением
             var computerInfoQuery = from x in computerInfoList
-                                    orderby x.Year descending
-                                    orderby x.ComputerManufacturer.ToString()
                                     orderby x.Owner descending
+                                    orderby x.ComputerManufacturer.ToString()
+                                    orderby x.yearOfManufacture descending
                                     select x;
-
 
             PrintCollectionInOneLine(computerInfoQuery);
 
@@ -101,9 +96,11 @@ namespace Task03
 
             // выполните сортировку одним выражением
             var computerInfoMethods = computerInfoList.
-                OrderByDescending(x => x.Owner).ThenBy(x => x.ComputerManufacturer).ThenByDescending(x => x.yearOfManufacture);
+                OrderByDescending(x => x.Owner).ThenBy(x => x.ComputerManufacturer.ToString()).ThenByDescending(x => x.yearOfManufacture);
+
             PrintCollectionInOneLine(computerInfoMethods);
 
+            Console.ReadLine();
         }
 
         // выведите элементы коллекции на экран с помощью кода, состоящего из одной линии (должна быть одна точка с запятой)
@@ -116,28 +113,28 @@ namespace Task03
 
     class ComputerInfo
     {
-
         public string Owner { get; set; }
-        public Manufacturer ComputerManufacturer { get; set; }
         public int yearOfManufacture { get; set; }
+        public Manufacturer ComputerManufacturer { get; set; }
 
-        public ComputerInfo(string name, int manufactrer, int year)
+        public ComputerInfo(string owner, int year, Manufacturer manufacturer)
         {
-            if (manufactrer < 0 || manufactrer > 3 || year < 1970 || year > 2020)
+            if (year < 1970 || year > 2020 || manufacturer > Manufacturer.Microsoft || manufacturer < Manufacturer.Dell)
                 throw new ArgumentException();
-            Owner = name;
-            ComputerManufacturer = (Manufacturer)manufactrer;
+            Owner = owner;
             yearOfManufacture = year;
+            ComputerManufacturer = manufacturer;
         }
 
         public override string ToString() =>
-            Owner + ": " + ComputerManufacturer + $" [{yearOfManufacture}]";
+            $"{Owner}: {ComputerManufacturer} [{yearOfManufacture}]";
     }
 
-    public enum Manufacturer
+    enum Manufacturer
     {
-        Dell = 0, Asus, Apple, Microsoft
+        Dell = 0,
+        Asus,
+        Apple,
+        Microsoft
     }
-    // Объявите перечисление Manufacturer, состоящее из элементов
-    // Dell(код производителя - 0), Asus(1), Apple(2), Microsoft(3).
 }

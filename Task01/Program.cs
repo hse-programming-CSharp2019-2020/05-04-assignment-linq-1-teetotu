@@ -36,37 +36,63 @@ namespace Task01
     {
         static void Main(string[] args)
         {
-            RunTesk01();
+            RunTask01();
         }
 
-        public static void RunTesk01()
+        public static void RunTask01()
         {
-            int[] arr;
+            int[] arr = null;
             try
             {
-                // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
-                arr = 
+                arr = (from e in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                       select int.Parse(e)).ToArray();
             }
-            
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("ArgumentNullException");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("ArgumentException");
+                return;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("FormatException");
+                return;
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("OverflowException");
+                return;
+            }
+
             // использовать синтаксис запросов!
-            IEnumerable<int> arrQuery = from 
+            IEnumerable<int> arrQuery = from t in arr
+                                        where t < 0 || t % 2 == 0
+                                        select t;
 
             // использовать синтаксис методов!
-            IEnumerable<int> arrMethod = arr.
+            IEnumerable<int> arrMethod = arr.Where(t => t < 0 || t % 2 == 0);
 
             try
             {
-                PrintEnumerableCollection<int>(arrQuery, ":");
-                PrintEnumerableCollection<int>(arrMethod, "*");
+                Print(arrQuery, ":");
+                Print(arrMethod, "*");
+            }
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("ArgumentNullException");
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("InvalidOperationException");
             }
         }
 
         // Попробуйте осуществить вывод элементов коллекции с учетом разделителя, записав это ОДНИМ ВЫРАЖЕНИЕМ.
         // P.S. Есть два способа, оставьте тот, в котором применяется LINQ...
-        public static void PrintEnumerableCollection<T>(IEnumerable<T> collection, string separator)
-        {
-           
-           
-        }
+        public static void Print<T>(IEnumerable<T> col, string sep) =>
+            Console.WriteLine(col.Select(x => x.ToString()).Aggregate((x, y) => x + sep + y));
     }
 }

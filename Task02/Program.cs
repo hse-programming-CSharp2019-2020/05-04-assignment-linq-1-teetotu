@@ -51,8 +51,9 @@ namespace Task02
                 {
                     int[] filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
 
-                    double averageUsingStaticForm = checked(Enumerable.Average(filteredCollection.Select(val => val * val)));
-                    double averageUsingInstanceForm = checked(filteredCollection.Select(val => val * val).Average());
+                    //зачем я дважды чекд сделал...подсказка была принята криво...
+                    double averageUsingStaticForm = Enumerable.Average(filteredCollection.Select(val => val * val));
+                    double averageUsingInstanceForm = filteredCollection.Select(val => val * val).Average();
 
                     Console.WriteLine($"{averageUsingInstanceForm:f3}");
                     Console.WriteLine($"{averageUsingStaticForm:f3}");

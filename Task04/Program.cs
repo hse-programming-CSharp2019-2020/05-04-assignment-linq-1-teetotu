@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 /*
  * На вход подается строка, состоящая из целых чисел типа int, разделенных одним или несколькими пробелами.
@@ -43,16 +44,36 @@ namespace Task04
             try
             {
                 // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
-                arr = 
+                arr = (from a in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                       select int.Parse(a)).ToArray();
             }
-           
-                // использовать синтаксис методов! SQL-подобные запросы не писать!
-               
-                int arrAggregate = arr.
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("ArgumentNullException");
+                return;
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("ArgumentException");
+                return;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("FormatException");
+                return;
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("OverflowException");
+                return;
+            }
 
-                int arrMyAggregate = MyClass.MyAggregate(arr);
+            // использовать синтаксис методов! SQL-подобные запросы не писать!
 
-                Console.WriteLine(arrAggregate);
+            //int arrAggregate = arr.
+            int arrMyAggregate = MyClass.MyAggregate(arr);
+
+                //Console.WriteLine(arrAggregate);
                 Console.WriteLine(arrMyAggregate);
            
         }
@@ -60,9 +81,14 @@ namespace Task04
 
     static class MyClass
     {
-        public static int MyAggregate()
+        public static int MyAggregate(int[] arr)
         {
-            
+            int sum = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                sum += (int)Math.Pow(-1, i) * arr[i];
+            }
+            return 5 + sum;
         }
     }
 }

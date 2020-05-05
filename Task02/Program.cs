@@ -36,10 +36,10 @@ namespace Task02
         static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-            RunTesk02();
+            RunTask02();
         }
 
-        public static void RunTesk02()
+        public static void RunTask02()
         {
             int[] arr = null;
             try

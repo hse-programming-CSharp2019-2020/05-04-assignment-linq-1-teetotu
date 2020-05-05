@@ -54,21 +54,45 @@ namespace Task03
     {
         static void Main(string[] args)
         {
-            int N
+            int N = 0;
             List<ComputerInfo> computerInfoList = new List<ComputerInfo>();
             try
             {
-                N = 
-                
+                N = int.Parse(Console.ReadLine());
+
                 for (int i = 0; i < N; i++)
                 {
-                    
+                    string[] info = Console.ReadLine().Split(' ');
+                    if (info.Length != 3)
+                        throw new FormatException();
+                    try
+                    {
+                        computerInfoList.Add(new ComputerInfo(info[0], int.Parse(info[2]), int.Parse(info[1])));
+                    }
+                    catch (ArgumentException)
+                    {
+                        throw new ArgumentException();
+                    }
                 }
             }
-           
+            catch (FormatException)
+            {
+                Console.WriteLine("FormatException");
+                return;
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("ArgumentException");
+                return;
+            }
 
             // выполните сортировку одним выражением
-            var computerInfoQuery = from 
+            var computerInfoQuery = from compInfo in computerInfoList
+                                    orderby compInfo.Owner descending
+                                    orderby compInfo.ComputerManufacturer ascending
+                                    orderby compInfo.yearOfManufacture descending
+                                    select compInfo;
+
 
             PrintCollectionInOneLine(computerInfoQuery);
 
@@ -76,22 +100,43 @@ namespace Task03
 
             // выполните сортировку одним выражением
             var computerInfoMethods = computerInfoList.
-
+                OrderByDescending(x => x.Owner).ThenBy(x => x.ComputerManufacturer).ThenByDescending(x => x.yearOfManufacture);
             PrintCollectionInOneLine(computerInfoMethods);
-            
+
         }
 
         // выведите элементы коллекции на экран с помощью кода, состоящего из одной линии (должна быть одна точка с запятой)
-        public static void PrintCollectionInOneLine(IEnumerable<ComputerInfo> collection)
-        {
-        }
+        //public static void PrintCollectionInOneLine<T>(IEnumerable<T> col) => тут просто метод из прошлых заданий
+        //    Console.WriteLine(col.Select(x => x.ToString()).Aggregate((x, y) => x + Environment.NewLine + y));
+        public static void PrintCollectionInOneLine(IEnumerable<ComputerInfo> collection) =>
+            collection.ToList().ForEach(x => Console.WriteLine(x));
     }
 
 
     class ComputerInfo
     {
+
         public string Owner { get; set; }
         public Manufacturer ComputerManufacturer { get; set; }
-        
+        public int yearOfManufacture { get; set; }
+
+        public ComputerInfo(string name, int manufactrer, int year)
+        {
+            if (manufactrer < 0 || manufactrer > 3 || year < 1970 || year > 2020)
+                throw new ArgumentException();
+            Owner = name;
+            ComputerManufacturer = (Manufacturer)manufactrer;
+            yearOfManufacture = year;
+        }
+
+        public override string ToString() =>
+            Owner + ": " + ComputerManufacturer + $" [{yearOfManufacture}]";
     }
+
+    public enum Manufacturer
+    {
+        Dell = 0, Asus, Apple, Microsoft
+    }
+    // Объявите перечисление Manufacturer, состоящее из элементов
+    // Dell(код производителя - 0), Asus(1), Apple(2), Microsoft(3).
 }

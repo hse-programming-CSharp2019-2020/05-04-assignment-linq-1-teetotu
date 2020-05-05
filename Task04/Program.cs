@@ -35,11 +35,10 @@ namespace Task04
     {
         static void Main(string[] args)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-            RunTask04();
+            RunTesk04();
         }
 
-        public static void RunTask04()
+        public static void RunTesk04()
         {
             int[] arr;
             try
@@ -71,10 +70,11 @@ namespace Task04
 
             // использовать синтаксис методов! SQL-подобные запросы не писать!
 
-            //int arrAggregate = arr.
+            int arrAggregate = 5 + arr.Select((x, index) => (int)Math.Pow(-1, index) * x)
+                                           .Aggregate((x, y) => x + y);
             int arrMyAggregate = MyClass.MyAggregate(arr);
 
-                //Console.WriteLine(arrAggregate);
+                Console.WriteLine(arrAggregate);
                 Console.WriteLine(arrMyAggregate);
            
         }
@@ -82,14 +82,13 @@ namespace Task04
 
     static class MyClass
     {
-        public static int MyAggregate(int[] arr)
+        public static int MyAggregate(int[] array)
         {
-            int sum = 0;
-            for (int i = 0; i < arr.Length; i++)
-            {
-                sum += (int)Math.Pow(-1, i) * arr[i];
-            }
-            return 5 + sum;
+            int result = 5;
+            for (int i = 0; i < array.Length; i++)
+                result += array[i] * (int)Math.Pow(-1, i);
+
+            return result;
         }
     }
 }

@@ -47,6 +47,22 @@ namespace Task02
                 // Попробуйте осуществить считывание целочисленного массива, записав это ОДНИМ ВЫРАЖЕНИЕМ.
                 arr = (from x in Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                        select int.Parse(x)).ToArray();
+                checked
+                {
+                    int[] filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
+                    int[] squaresOfFilteredCollection = arr.Select(x => x * x).ToArray();
+                    // Статическая форма вызова метода подсчета среднего
+                    double averageUsingStaticForm = squaresOfFilteredCollection.Average();
+
+                    // Объектная форма вызова метода подсчета среднего
+                    double averageUsingInstanceForm = Enumerable.Average(squaresOfFilteredCollection);
+
+                    Console.WriteLine($"{averageUsingInstanceForm:f3}");
+                    Console.WriteLine($"{averageUsingStaticForm:f3}");
+
+                    // вывести элементы коллекции в одну строку
+                    Print(filteredCollection, ' ');
+                }
             }
             catch (ArgumentNullException)
             {
@@ -65,34 +81,6 @@ namespace Task02
             {
                 Console.WriteLine("OverflowException");
             }
-
-            var filteredCollection = arr.TakeWhile(x => x != 0).ToArray();
-            var squaresOfFilteredCollection = arr.Select(x => Math.Pow(x, 2));
-
-            try
-            {
-
-                // Статическая форма вызова метода подсчета среднего
-                double averageUsingStaticForm = squaresOfFilteredCollection.Average();
-
-                // Объектная форма вызова метода подсчета среднего
-                double averageUsingInstanceForm = Enumerable.Average(squaresOfFilteredCollection);
-                
-                Console.WriteLine($"{averageUsingInstanceForm:f3}");
-                Console.WriteLine($"{averageUsingStaticForm:f3}");
-
-                // вывести элементы коллекции в одну строку
-                Print(filteredCollection, ' ');
-            }
-            catch (ArgumentNullException)
-            {
-                Console.WriteLine("ArgumentNullException");
-            }
-            catch (InvalidOperationException)
-            {
-                Console.WriteLine("InvalidOperationException");
-            }
-
         }
 
         public static void Print<T>(IEnumerable<T> col, char sep) =>
